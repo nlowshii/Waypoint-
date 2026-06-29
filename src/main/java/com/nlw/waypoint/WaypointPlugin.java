@@ -91,7 +91,6 @@ public class WaypointPlugin extends JavaPlugin {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (!(sender instanceof Player player)) return true;
-        if (!player.hasPermission("waypoint.use")) return true;
         if (args.length == 0) return true;
 
         String name = args[0];
