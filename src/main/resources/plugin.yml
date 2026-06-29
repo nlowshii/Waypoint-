@@ -1,4 +1,4 @@
-name: WaypointPlugin
+name: BetterWaypoint
 version: 1.0
 main: com.nlw.waypoint.WaypointPlugin
 api-version: 1.21
