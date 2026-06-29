@@ -1,0 +1,12 @@
+name: WaypointPlugin
+version: 1.0
+main: com.nlw.waypoint.WaypointPlugin
+api-version: 1.21
+
+commands:
+  setwaypoint:
+    usage: /setwaypoint <name>
+    permission: waypoint.use
+  delwaypoint:
+    usage: /delwaypoint <name>
+    permission: waypoint.use
