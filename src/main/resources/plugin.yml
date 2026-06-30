@@ -8,3 +8,5 @@ commands:
     usage: /setwaypoint <name>
   delwaypoint:
     usage: /delwaypoint <name>
+  cleanwaypoints:
+    usage: /cleanwaypoints
