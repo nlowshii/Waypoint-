@@ -18,8 +18,6 @@ public class WaypointPlugin extends JavaPlugin {
 
     private static final double HIDE_DISTANCE = 10.0;
     private static final double LABEL_OFFSET = 8.0;
-    private static final int BEAM_HEIGHT = 8;
-    private static final int BEAM_INTERVAL = 4;
 
     @Override
     public void onEnable() {
@@ -41,25 +39,21 @@ public class WaypointPlugin extends JavaPlugin {
 
     private void spawnBeam(String name, Location loc) {
         List<TextDisplay> list = new ArrayList<>();
-        int maxHeight = loc.getWorld().getEnvironment() == World.Environment.NETHER
-            ? Math.min(BEAM_HEIGHT, 64) : BEAM_HEIGHT;
 
-        for (int y = 0; y <= maxHeight; y += BEAM_INTERVAL) {
-            Location pos = loc.clone().add(0, y, 0);
-            TextDisplay display = (TextDisplay) loc.getWorld().spawnEntity(pos, EntityType.TEXT_DISPLAY);
-            display.setText("§f" + name);
-            display.setBillboard(display.getBillboard().CENTER);
-            display.setSeeThrough(true);
-            display.setViewRange(128);
-            org.bukkit.util.Transformation t = new org.bukkit.util.Transformation(
-                new org.joml.Vector3f(0, 0, 0),
-                new org.joml.AxisAngle4f(0, 0, 0, 1),
-                new org.joml.Vector3f(1.5f, 1.5f, 1.5f),
-                new org.joml.AxisAngle4f(0, 0, 0, 1)
-            );
-            display.setTransformation(t);
-            list.add(display);
-        }
+        Location pos = loc.clone().add(0, 4, 0);
+        TextDisplay display = (TextDisplay) loc.getWorld().spawnEntity(pos, EntityType.TEXT_DISPLAY);
+        display.setText("§f-" + name + "-");
+        display.setBillboard(display.getBillboard().CENTER);
+        display.setSeeThrough(true);
+        display.setViewRange(128);
+        org.bukkit.util.Transformation t = new org.bukkit.util.Transformation(
+            new org.joml.Vector3f(0, 0, 0),
+            new org.joml.AxisAngle4f(0, 0, 0, 1),
+            new org.joml.Vector3f(1.5f, 1.5f, 1.5f),
+            new org.joml.AxisAngle4f(0, 0, 0, 1)
+        );
+        display.setTransformation(t);
+        list.add(display);
 
         beamDisplays.put(name, list);
     }
@@ -71,23 +65,17 @@ public class WaypointPlugin extends JavaPlugin {
                 for (Map.Entry<String, Location> entry : waypoints.entrySet()) {
                     Location loc = entry.getValue();
                     World world = loc.getWorld();
-                    int maxHeight = world.getEnvironment() == World.Environment.NETHER
-                        ? Math.min(BEAM_HEIGHT, 64) : BEAM_HEIGHT;
 
-                    for (int y = 0; y <= maxHeight; y += BEAM_INTERVAL) {
-                        // particle di atas teks
-                        world.spawnParticle(
-                            Particle.END_ROD,
-                            loc.getX(), loc.getY() + y + 0.8, loc.getZ(),
-                            3, 0.05, 0, 0.05, 0
-                        );
-                        // particle di bawah teks
-                        world.spawnParticle(
-                            Particle.END_ROD,
-                            loc.getX(), loc.getY() + y - 0.8, loc.getZ(),
-                            3, 0.05, 0, 0.05, 0
-                        );
-                    }
+                    world.spawnParticle(
+                        Particle.END_ROD,
+                        loc.getX(), loc.getY() + 4.8, loc.getZ(),
+                        3, 0.05, 0, 0.05, 0
+                    );
+                    world.spawnParticle(
+                        Particle.END_ROD,
+                        loc.getX(), loc.getY() + 3.2, loc.getZ(),
+                        3, 0.05, 0, 0.05, 0
+                    );
                 }
             }
         }.runTaskTimer(this, 0L, 5L);
