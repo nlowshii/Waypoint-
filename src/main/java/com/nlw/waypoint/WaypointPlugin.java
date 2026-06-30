@@ -86,6 +86,22 @@ public class WaypointPlugin extends JavaPlugin {
         if (list != null) for (TextDisplay d : list) if (d != null) d.remove();
     }
 
+    private void cleanAllDisplays(Player player) {
+        for (Entity e : player.getWorld().getEntities()) {
+            if (e instanceof TextDisplay) e.remove();
+        }
+        for (List<TextDisplay> list : beamDisplays.values())
+            for (TextDisplay d : list) if (d != null) d.remove();
+        beamDisplays.clear();
+
+        for (Map<String, TextDisplay> map : playerLabels.values())
+            for (TextDisplay d : map.values()) if (d != null) d.remove();
+        playerLabels.clear();
+
+        for (Map.Entry<String, Location> entry : waypoints.entrySet())
+            spawnBeam(entry.getKey(), entry.getValue());
+    }
+
     private void startPlayerLabelTask() {
         new BukkitRunnable() {
             @Override
@@ -188,6 +204,12 @@ public class WaypointPlugin extends JavaPlugin {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (!(sender instanceof Player player)) return true;
+
+        if (cmd.getName().equalsIgnoreCase("cleanwaypoints")) {
+            cleanAllDisplays(player);
+            return true;
+        }
+
         if (args.length == 0) return true;
 
         String name = args[0];
